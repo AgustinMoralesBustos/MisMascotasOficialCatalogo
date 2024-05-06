@@ -4,12 +4,12 @@ import './Item.css';
 
 const Item = ({ producto }) => {
     return (
-        <div className="contenedor">
+        <div className="item-container">
             <div className='tarjeta'>
                 <h2 className='titulo'>{producto.title}</h2>
                 <div className='cuerpo'>
                     <img src={producto.img} alt={producto.alt} />
-                    <p>{producto.description}</p>
+                    <p>Código: {producto.id}</p>
                     <h3>$ {producto.price}</h3>
                 </div>
                 <div className='pie'>

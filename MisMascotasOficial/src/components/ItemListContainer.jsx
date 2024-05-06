@@ -13,12 +13,28 @@ const ItemListContainer = () => {
         const fetchData = async () => {
             const db = getFirestore();
             const productosCollection = collection(db, 'productos');
-            let filteredQuery = query(productosCollection);
+            let filteredQuery;
 
             if (category) {
-                filteredQuery = query(productosCollection, where("category", "==", category));
+                if (category.includes(" ")) {
+                    const [mainCategory, subCategory] = category.split(' ');
+                    filteredQuery = query(productosCollection, 
+                        where("category", "==", mainCategory),
+                        where("subcategory", "==", subCategory),
+                        where("showOnPage", "==", true)
+                    );
+                } else {
+                    filteredQuery = query(productosCollection, 
+                        where("category", "==", category),
+                        where("showOnPage", "==", true)
+                    );
+                }
+            } else {
+                filteredQuery = query(productosCollection,
+                    where("showOnPage", "==", true)
+                );
             }
-
+                
             try {
                 const querySnapshot = await getDocs(filteredQuery);
                 const productosData = querySnapshot.docs.map(productoDoc => ({
@@ -32,7 +48,7 @@ const ItemListContainer = () => {
                 setLoading(false);
             }
         };
-
+        
         fetchData();
     }, [category]);
 
@@ -43,7 +59,7 @@ const ItemListContainer = () => {
     if (error) {
         return <div>Error al cargar productos: {error.message}</div>;
     }
-
+    
     return <ItemList productos={productos} />;
 };
 
