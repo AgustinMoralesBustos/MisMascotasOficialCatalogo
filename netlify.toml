@@ -2,7 +2,11 @@
   publish = "dist"
   command = "npm run build"
 
+[functions]
+  directory = "functions" # Asegúrate de que esta línea apunte a un directorio válido
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  
